@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Can you afford a full-time EA?</title>
+<meta name="description" content="Slide your salary. See what Lindy does for you in iMessage.">
+<meta name="theme-color" content="#FEFDF4">
+<meta property="og:title" content="Can you afford a full-time EA?">
+<meta property="og:description" content="Slide your salary. See what Lindy does for you in iMessage.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="preload" as="image" href="assets/static_background_cream-gradient_wide.png">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<style>
+  :root {
+    --text:        #0F3547;
+    --text-soft:   rgba(15, 53, 71, 0.62);
+    --text-faint:  rgba(15, 53, 71, 0.38);
+    --brand:       #2A66FF;
+    --brand-deep:  #1E4FD9;
+    --gold:        #FFBF00;
+    --gold-light:  #FFD518;
+    --bg:          #FEFDF4;
+    --stroke:      #DED5C3;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    min-height: 100%;
+    font-family: 'Manrope', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    min-height: 100dvh;
+    background:
+      url("assets/static_background_cream-gradient_wide.png") center/cover no-repeat,
+      linear-gradient(180deg, #FEFDF4 0%, #FFF4C9 100%);
+    background-attachment: fixed;
+  }
+
+  /* ===== Top bar ======================================================== */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 22px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 20;
+    pointer-events: none;
+  }
+  .topbar > * { pointer-events: auto; }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .brand svg { width: 28px; height: 28px; display: block; }
+  .brand span {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    color: var(--text);
+  }
+  .learn-more {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.14px;
+    color: var(--text);
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(15, 53, 71, 0.10);
+    padding: 10px 18px;
+    border-radius: 100px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 10px rgba(15, 53, 71, 0.04);
+    transition: background 0.2s ease, transform 0.18s ease;
+  }
+  .learn-more:hover { background: #fff; transform: translateY(-1px); }
+  .learn-more svg { width: 14px; height: 14px; }
+
+  /* ===== Main =========================================================== */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 88px 32px 44px;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  /* ===== Header ========================================================= */
+  header { width: 100%; text-align: center; }
+  .headline-stage {
+    position: relative;
+    width: 100%;
+    min-height: 1.05em;
+  }
+  .headline {
+    font-size: clamp(22px, 5.4vw, 56px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    text-align: center;
+    max-width: none;
+    margin: 0 auto;
+    white-space: nowrap;
+  }
+  #headline-a {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .headline .k { font-style: normal; }
+  .verdict {
+    margin-top: 18px;
+    margin-bottom: 26px;
+    font-size: clamp(18px, 3vw, 30px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    padding: 2px 0 6px;
+    min-height: 1.2em;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+  .verdict.visible { opacity: 1; }
+  .verdict span {
+    display: inline-block;
+    background: linear-gradient(92deg, #FFA43D 0%, #FFBD3D 50%, #FFD96B 100%);
+    -webkit-background-clip: text;
+            background-clip: text;
+    -webkit-text-fill-color: transparent;
+            color: transparent;
+    transition: opacity 0.3s ease;
+    padding-bottom: 2px;
+  }
+  #headline-a .h-yes,
+  #headline-a .h-meet { display: inline-block; will-change: transform, opacity; }
+
+  /* ===== Stage: avatar + task labels =================================== */
+  .stage-row {
+    position: relative;
+    width: 100%;
+    max-width: 820px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  .tasks {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 8px 12px;
+    min-width: 0;
+  }
+  .tasks.left  { align-items: flex-end;   text-align: right; }
+  .tasks.right { align-items: flex-start; text-align: left;  }
+  .task {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-soft);
+    letter-spacing: -0.1px;
+    line-height: 1.3;
+    opacity: 0;
+    transform: translateX(0);
+    transition: opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1);
+    white-space: nowrap;
+  }
+  .tasks.left  .task { transform: translateX(-10px); }
+  .tasks.right .task { transform: translateX(10px);  }
+  .task.visible { opacity: 1; transform: translateX(0); }
+  /* .task.hero intentionally unstyled — keep all tasks visually equal */
+
+  .avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 280px;
+    aspect-ratio: 1 / 1;
+  }
+  .avatar-wrap svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 28px 48px rgba(15, 53, 71, 0.12));
+  }
+  .halo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 130%;
+    height: 130%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 213, 24, 0.6) 0%, rgba(255, 213, 24, 0) 58%);
+    opacity: 0;
+    pointer-events: none;
+    filter: blur(16px);
+  }
+
+  /* ===== Panel stack (slider + reveal, vertical) ======================= */
+  .panel-stack {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ===== Slider panel =================================================== */
+  .slider-panel {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .slider-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin-bottom: -6px;
+  }
+  .salary-morph {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1em;
+    line-height: 0.95;
+  }
+  .salary-value {
+    position: relative;
+    display: inline-block;
+    font-size: clamp(44px, 9vw, 96px);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+  .salary-value .unit {
+    font-size: 0.36em;
+    font-weight: 500;
+    color: var(--text-soft);
+    margin-left: 6px;
+    letter-spacing: -0.5px;
+  }
+  .strike-bar {
+    position: absolute;
+    left: -6%;
+    top: 50%;
+    height: 8px;
+    width: 0;
+    background: #2A66FF;
+    border-radius: 4px;
+    transform-origin: left center;
+    transform: translateY(-50%) rotate(-4deg);
+    box-shadow: 0 4px 14px rgba(42, 102, 255, 0.4);
+    pointer-events: none;
+  }
+  .new-price {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(22px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: var(--text);
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .new-price .unit {
+    font-weight: 700;
+    color: var(--text);
+    margin-left: 2px;
+    letter-spacing: -1.3px;
+  }
+  .slider-wrap { width: 100%; padding: 4px 0; }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 100px;
+    outline: none;
+    cursor: grab;
+    background: rgba(15, 53, 71, 0.10);
+  }
+  input[type="range"]:active { cursor: grabbing; }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: grab;
+    box-shadow:
+      inset 0 0 0 3px var(--brand),
+      inset 0 0 0 6px #fff,
+      inset 0 0 0 9px var(--brand),
+      0 8px 22px rgba(42, 102, 255, 0.34),
+      0 2px 4px rgba(0, 0, 0, 0.06);
+    transition: transform 0.18s cubic-bezier(.4,0,.2,1);
+  }
+  input[type="range"]:hover::-webkit-slider-thumb  { transform: scale(1.08); }
+  input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.18); cursor: grabbing; }
+  input[type="range"]::-moz-range-thumb {
+    width: 30px; height: 30px; background: var(--brand);
+    border: 4px solid #fff; border-radius: 50%;
+    cursor: grab; box-shadow: 0 8px 22px rgba(42, 102, 255, 0.34);
+  }
+  .context-line {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-soft);
+    text-align: center;
+    line-height: 1.5;
+  }
+  .context-line b { color: var(--text); font-weight: 700; }
+
+  /* ===== Reveal ========================================================= */
+  .reveal {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    height: 0;
+    overflow: hidden;
+  }
+  .reveal-sub {
+    font-size: clamp(14px, 1.8vw, 17px);
+    font-weight: 500;
+    color: var(--text-soft);
+    line-height: 1.3;
+    max-width: 32ch;
+    margin: 0;
+  }
+  .reveal-sub b { color: var(--text); font-weight: 700; }
+
+  .imessage {
+    width: 260px;
+    max-width: 80%;
+    height: auto;
+    border-radius: 24px;
+    box-shadow: 0 24px 60px rgba(15, 53, 71, 0.14), 0 6px 16px rgba(15, 53, 71, 0.08);
+  }
+
+  .cta-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--brand);
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.16px;
+    padding: 18px 42px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow:
+      0 14px 34px rgba(42, 102, 255, 0.38),
+      0 3px 8px rgba(42, 102, 255, 0.18),
+      inset 0 -2px 1px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    transition: transform 0.18s cubic-bezier(.4,0,.2,1), filter 0.18s ease;
+  }
+  .cta:hover  { filter: brightness(1.06); transform: translateY(-1px); }
+  .cta:active { transform: translateY(0) scale(0.98); }
+  .cta svg    { width: 18px; height: 18px; }
+
+  .share {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-soft);
+    background: none;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.2px;
+    padding: 6px 10px;
+    margin-top: 2px;
+  }
+  .share:hover { color: var(--text); }
+  .share span  { text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ===== Responsive ===================================================== */
+  @media (min-width: 1100px) {
+    main          { gap: 32px; }
+    .headline     { font-size: 60px; letter-spacing: -3px; }
+    .salary-value { font-size: 96px; letter-spacing: -4.4px; }
+    .new-price    { font-size: 44px; letter-spacing: -1.6px; }
+    .avatar-wrap  { width: 280px; }
+    .task         { font-size: 16px; }
+  }
+  @media (max-width: 860px) {
+    main          { padding: 84px 22px 32px; gap: 22px; }
+    .stage-row    { flex-direction: column; gap: 14px; }
+    .tasks        { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 6px 14px; padding: 0; }
+    .tasks.left, .tasks.right { align-items: center; text-align: center; }
+    .tasks.left .task, .tasks.right .task { transform: translateY(6px); }
+    .task.visible { transform: translateY(0); }
+    .avatar-wrap  { width: 190px; order: -1; }
+    .headline     { font-size: 34px; letter-spacing: -1.4px; }
+    .salary-value { font-size: 60px; letter-spacing: -2.6px; }
+    .new-price    { font-size: 30px; letter-spacing: -0.8px; }
+    .strike-bar   { height: 6px; }
+  }
+  @media (max-width: 480px) {
+    main          { padding: 74px 18px 24px; gap: 18px; }
+    .topbar       { padding: 14px 18px; }
+    .brand svg    { width: 22px; height: 22px; }
+    .brand span   { font-size: 17px; }
+    .learn-more   { font-size: 12px; padding: 8px 12px; }
+    .headline     { font-size: 22px; letter-spacing: -0.6px; line-height: 1.02; }
+    .salary-value { font-size: 46px; letter-spacing: -1.8px; }
+    .new-price    { font-size: 32px; letter-spacing: -1px; white-space: normal; text-align: center; }
+    .avatar-wrap  { width: 150px; }
+    .task         { font-size: 13px; }
+    .reveal-sub   { font-size: 16px; }
+    .cta          { padding: 15px 32px; }
+  }
+  @media (max-height: 760px) and (min-width: 861px) {
+    main          { padding: 88px 32px 36px; gap: 22px; }
+    .avatar-wrap  { width: 220px; }
+    .headline     { font-size: 46px; letter-spacing: -2px; }
+    .salary-value { font-size: 72px; letter-spacing: -3.2px; }
+    .new-price    { font-size: 30px; letter-spacing: -0.8px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="brand" href="https://lindy.ai" target="_blank" rel="noopener">
+    <svg viewBox="0 0 262 262" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="131" cy="127" r="121" fill="#FEFDF4" stroke="#DED5C3" stroke-width="4"/>
+      <g fill="none" stroke="#0F3547" stroke-width="13.37" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 140.38 70.86 L 106.35 156.88 L 135.69 163.33"/>
+        <path d="M 169.29 186.11 C 156.97 202.72 133.53 206.19 116.92 193.87"/>
+        <path d="M 54.55 102.30 L 75.33 86.78 L 93.67 107.97"/>
+        <path d="M 148.71 115.96 L 169.50 100.43 L 187.84 121.63"/>
+      </g>
+    </svg>
+    <span>Lindy</span>
+  </a>
+  <a class="learn-more" id="learn-more" href="https://lindy.ai" target="_blank" rel="noopener">
+    Learn more
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="18" y2="12"/><polyline points="12 6 18 12 12 18"/></svg>
+  </a>
+</div>
+
+<main>
+  <header id="header">
+    <div class="headline-stage">
+      <h1 class="headline" id="headline-q">Can you afford a <span class="k">full-time EA</span>?</h1>
+      <h1 class="headline" id="headline-a">Meet your AI assistant.</h1>
+    </div>
+    <div class="verdict" id="verdict"><span id="verdict-text">nah, not a chance</span></div>
+  </header>
+
+  <div class="stage-row">
+    <div class="tasks left" id="tasks-left">
+      <div class="task" data-threshold="50000">Scheduling</div>
+      <div class="task" data-threshold="120000">Meeting prep</div>
+      <div class="task" data-threshold="200000">Research &amp; briefs</div>
+      <div class="task" data-threshold="280000">Full calendar control</div>
+    </div>
+
+    <div class="avatar-wrap" id="avatar-wrap">
+      <div class="halo" id="halo"></div>
+      <!--
+        Lindy logo-face, paths from Figma node 149:6149.
+        Outer circle cx=131, cy=127, r=123. Liquid fills inside.
+      -->
+      <svg viewBox="0 0 262 262" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="face-clip" clipPathUnits="userSpaceOnUse">
+            <circle cx="131" cy="127" r="121"/>
+          </clipPath>
+          <linearGradient id="liquid-grad" x1="0.15" y1="1" x2="0.85" y2="0">
+            <stop offset="0%"   stop-color="#E88A00"/>
+            <stop offset="22%"  stop-color="#FFA300"/>
+            <stop offset="45%"  stop-color="#FFBF00"/>
+            <stop offset="65%"  stop-color="#FFD518"/>
+            <stop offset="85%"  stop-color="#FFE76B"/>
+            <stop offset="100%" stop-color="#FFF6CC"/>
+          </linearGradient>
+          <radialGradient id="liquid-shine" cx="30%" cy="35%" r="80%">
+            <stop offset="0%"   stop-color="#FFFFFF" stop-opacity="0.55"/>
+            <stop offset="45%"  stop-color="#FFFFFF" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="face-glass" cx="35%" cy="30%" r="85%">
+            <stop offset="0%"   stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#FEFDF4"/>
+          </radialGradient>
+        </defs>
+
+        <circle cx="131" cy="127" r="123" fill="url(#face-glass)" stroke="#DED5C3" stroke-width="4"/>
+
+        <g clip-path="url(#face-clip)">
+          <rect id="fill-rect" x="0" y="260" width="262" height="80" fill="url(#liquid-grad)"/>
+          <rect id="fill-shine" x="0" y="260" width="262" height="80" fill="url(#liquid-shine)"/>
+          <path id="wave-top" d="" fill="url(#liquid-grad)" opacity="0.95"/>
+          <path id="wave-hl"  d="" fill="none" stroke="#FFFFFF" stroke-width="1.4" opacity="0.6"/>
+        </g>
+
+        <g id="face" fill="none" stroke="#0F3547" stroke-width="13.37" stroke-linecap="round" stroke-linejoin="round">
+          <path id="nose"  d="M 140.38 70.86 L 106.35 156.88 L 135.69 163.33"/>
+          <path id="smile" d="M 169.29 186.11 C 156.97 202.72 133.53 206.19 116.92 193.87"/>
+          <path id="eye-l" d="M 54.55 102.30 L 75.33 86.78 L 93.67 107.97"/>
+          <path id="eye-r" d="M 148.71 115.96 L 169.50 100.43 L 187.84 121.63"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="tasks right" id="tasks-right">
+      <div class="task" data-threshold="80000">Email triage</div>
+      <div class="task" data-threshold="160000">Travel booking</div>
+      <div class="task" data-threshold="240000">Client follow-ups</div>
+      <div class="task" data-threshold="300000">Inbox zero, daily</div>
+    </div>
+  </div>
+
+  <div class="panel-stack" id="panel-stack">
+    <div class="slider-panel" id="slider-panel">
+      <div class="slider-label" id="slider-label">Your salary</div>
+      <div class="salary-morph" id="salary-morph">
+        <div class="salary-value" id="salary-value">$<span id="salary-text">0</span><span class="unit">/yr</span><span class="strike-bar" id="strike-bar"></span></div>
+        <div class="new-price" id="new-price">less than a coffee<span class="unit">&#8239;/ day</span></div>
+      </div>
+      <div class="slider-wrap" id="slider-wrap">
+        <input type="range" id="slider" min="0" max="350000" step="1000" value="0" aria-label="Your annual salary">
+      </div>
+      <div class="context-line" id="context-line">
+        The average EA in <b id="city-name">the US</b> costs <b id="city-ea">$95,000</b>/yr.
+      </div>
+    </div>
+
+    <div class="reveal" id="reveal">
+      <p class="reveal-sub">lives in your imessage</p>
+      <div class="cta-wrap">
+        <button class="cta" id="cta" type="button">
+          Try free
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="18" y2="12"/><polyline points="12 6 18 12 12 18"/></svg>
+        </button>
+      </div>
+      <button class="share" id="share" type="button">Send to a friend <span>↗</span></button>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // --- Config --------------------------------------------------------------
+  const SLIDER_MAX  = 350000;
+  const FILL_ANCHOR = 350000;
+  const IDLE_MS     = 2500;
+  const MAX_HIT_MS  = 40;   // near-instant reveal when slider pegged at max
+
+  // Liquid geometry inside face circle (cx=131, cy=127, r=121)
+  const FILL_TOP    = 8;
+  const FILL_BOTTOM = 246;
+
+  const WAVE_AMP    = 2.2;
+  const WAVE_LEN    = 62;
+  const WAVE_SPEED  = 0.0018;
+
+  // Realistic avg EA compensation by metro area (rough, public data)
+  const CITY_DB = {
+    'san francisco':  { name: 'San Francisco', ea: 112000 },
+    'oakland':        { name: 'the Bay Area',  ea: 110000 },
+    'san jose':       { name: 'the Bay Area',  ea: 114000 },
+    'new york':       { name: 'New York',      ea: 118000 },
+    'brooklyn':       { name: 'New York',      ea: 118000 },
+    'los angeles':    { name: 'Los Angeles',   ea: 98000  },
+    'seattle':        { name: 'Seattle',       ea: 105000 },
+    'boston':         { name: 'Boston',        ea: 102000 },
+    'chicago':        { name: 'Chicago',       ea: 88000  },
+    'austin':         { name: 'Austin',        ea: 85000  },
+    'miami':          { name: 'Miami',         ea: 78000  },
+    'washington':     { name: 'DC',            ea: 96000  },
+    'denver':         { name: 'Denver',        ea: 82000  },
+    'atlanta':        { name: 'Atlanta',       ea: 80000  },
+    'london':         { name: 'London',        ea: 72000  },
+    'dubai':          { name: 'Dubai',         ea: 68000  },
+    'singapore':      { name: 'Singapore',     ea: 82000  },
+    'toronto':        { name: 'Toronto',       ea: 76000  },
+    'paris':          { name: 'Paris',         ea: 70000  },
+    'berlin':         { name: 'Berlin',        ea: 66000  },
+    'sydney':         { name: 'Sydney',        ea: 88000  },
+    'lahore':         { name: 'Lahore',        ea: 18000  },
+    'karachi':        { name: 'Karachi',       ea: 20000  },
+  };
+  // Short UTM keys that marketing can drop into ad URLs: ?city=sf
+  const UTM_ALIAS = {
+    sf: 'san francisco', sfo: 'san francisco', bay: 'oakland',
+    nyc: 'new york',  ny: 'new york', brk: 'brooklyn',
+    la: 'los angeles', lax: 'los angeles',
+    sea: 'seattle', bos: 'boston', chi: 'chicago', aus: 'austin',
+    mia: 'miami', dc: 'washington', den: 'denver', atl: 'atlanta',
+    lon: 'london', ldn: 'london', dxb: 'dubai', sgp: 'singapore',
+    tor: 'toronto', par: 'paris', ber: 'berlin', syd: 'sydney',
+    lhe: 'lahore', khi: 'karachi',
+  };
+
+  // --- Elements ------------------------------------------------------------
+  const slider      = document.getElementById('slider');
+  const salaryText  = document.getElementById('salary-text');
+  const fillRect    = document.getElementById('fill-rect');
+  const fillShine   = document.getElementById('fill-shine');
+  const waveTop     = document.getElementById('wave-top');
+  const waveHl      = document.getElementById('wave-hl');
+  const halo        = document.getElementById('halo');
+  const avatarWrap  = document.getElementById('avatar-wrap');
+  const sliderPanel = document.getElementById('slider-panel');
+  const reveal      = document.getElementById('reveal');
+  const headlineQ   = document.getElementById('headline-q');
+  const headlineA   = document.getElementById('headline-a');
+  const smile       = document.getElementById('smile');
+  const cta         = document.getElementById('cta');
+  const share       = document.getElementById('share');
+  const cityName    = document.getElementById('city-name');
+  const cityEa      = document.getElementById('city-ea');
+  const verdict     = document.getElementById('verdict');
+  const verdictText = document.getElementById('verdict-text');
+  const sliderLabel = document.getElementById('slider-label');
+  const sliderWrap  = document.getElementById('slider-wrap');
+  const contextLine = document.getElementById('context-line');
+  const salaryValue = document.getElementById('salary-value');
+  const strikeBar   = document.getElementById('strike-bar');
+  const newPrice    = document.getElementById('new-price');
+  const taskNodes   = Array.from(document.querySelectorAll('.task'));
+
+  // --- State ---------------------------------------------------------------
+  let interacted = false;
+  let revealed   = false;
+  let idleTimer  = null;
+
+  let targetY   = FILL_BOTTOM + 4;
+  let currentY  = FILL_BOTTOM + 4;
+  let wavePhase = 0;
+  let lastFrame = performance.now();
+
+  // --- Math ----------------------------------------------------------------
+  function pctFromSalary(salary) {
+    return Math.min((salary / FILL_ANCHOR) * 100, 100);
+  }
+  function yFromPct(pct) {
+    return FILL_BOTTOM - (pct / 100) * (FILL_BOTTOM - FILL_TOP);
+  }
+  function formatMoney(n) { return n.toLocaleString('en-US'); }
+
+  function setSliderGradient(salary) {
+    const p = (salary / SLIDER_MAX) * 100;
+    slider.style.background =
+      `linear-gradient(to right, #2A66FF 0%, #5A87FF ${p}%, rgba(15,53,71,0.10) ${p}%, rgba(15,53,71,0.10) 100%)`;
+  }
+
+  // --- Location personalization -------------------------------------------
+  function applyLocation(displayName, ea) {
+    cityName.textContent = displayName;
+    if (ea != null) cityEa.textContent = '$' + formatMoney(ea);
+  }
+
+  function resolveCityFromString(str) {
+    if (!str) return null;
+    const key = str.trim().toLowerCase();
+    if (UTM_ALIAS[key]) return CITY_DB[UTM_ALIAS[key]];
+    if (CITY_DB[key])   return CITY_DB[key];
+    return null;
+  }
+
+  function personalizeLocation() {
+    // 1. Explicit UTM override: ?city=sf or ?city=new+york
+    const params = new URLSearchParams(window.location.search);
+    const urlCity = params.get('city') || params.get('utm_city');
+    const urlMatch = resolveCityFromString(urlCity);
+    if (urlMatch) {
+      applyLocation(urlMatch.name, urlMatch.ea);
+      return;
+    }
+
+    // 2. Geo IP lookup (free, CORS-enabled, no key)
+    fetch('https://ipapi.co/json/')
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(data => {
+        const match = resolveCityFromString(data.city);
+        if (match) applyLocation(match.name, match.ea);
+      })
+      .catch(() => { /* stays on US default */ });
+  }
+
+  // --- Wave rendering ------------------------------------------------------
+  function buildWavePath(y, phase) {
+    const steps = 28;
+    const x0 = 0, x1 = 262;
+    let d = `M ${x0} ${(y - WAVE_AMP).toFixed(2)} `;
+    for (let i = 1; i <= steps; i++) {
+      const x = x0 + ((x1 - x0) * i) / steps;
+      const wy = y + Math.sin((x / WAVE_LEN) * Math.PI * 2 + phase) * WAVE_AMP;
+      d += `L ${x.toFixed(2)} ${wy.toFixed(2)} `;
+    }
+    d += `L ${x1} 262 L ${x0} 262 Z`;
+    return d;
+  }
+
+  function renderFrame(now) {
+    const dt = Math.min(now - lastFrame, 40);
+    lastFrame = now;
+
+    const diff = targetY - currentY;
+    // Snap if close; otherwise ease at ~50ms time constant (faster than before)
+    if (Math.abs(diff) < 0.3) currentY = targetY;
+    else currentY += diff * Math.min(1, dt / 45);
+    wavePhase += WAVE_SPEED * dt;
+
+    waveTop.setAttribute('d', buildWavePath(currentY, wavePhase));
+    waveHl.setAttribute('d',  buildWavePath(currentY - 1.4, wavePhase + 0.5));
+    fillRect.setAttribute('y', String(currentY));
+    fillRect.setAttribute('height', String(262 - currentY));
+    fillShine.setAttribute('y', String(currentY));
+    fillShine.setAttribute('height', String(262 - currentY));
+
+    requestAnimationFrame(renderFrame);
+  }
+
+  // --- Task label reveal --------------------------------------------------
+  function updateTasks(salary) {
+    taskNodes.forEach(node => {
+      const threshold = parseInt(node.dataset.threshold, 10);
+      if (salary >= threshold) node.classList.add('visible');
+    });
+  }
+  function revealAllTasks() {
+    taskNodes.forEach(node => node.classList.add('visible'));
+  }
+
+  // --- Verdict ladder ------------------------------------------------------
+  const VERDICTS = [
+    { at: 0,      text: 'nope' },
+    { at: 15000,  text: 'nowhere close' },
+    { at: 30000,  text: 'not yet' },
+    { at: 50000,  text: 'barely' },
+    { at: 70000,  text: 'a stretch' },
+    { at: 90000,  text: 'keep going' },
+    { at: 110000, text: 'warmer' },
+    { at: 130000, text: 'getting there' },
+    { at: 150000, text: 'hmm' },
+    { at: 170000, text: 'maybe?' },
+    { at: 190000, text: 'kinda' },
+    { at: 210000, text: 'if you squint' },
+    { at: 230000, text: 'close-ish' },
+    { at: 250000, text: 'almost' },
+    { at: 270000, text: 'nearly' },
+    { at: 290000, text: 'so close' },
+    { at: 310000, text: 'one more push' },
+    { at: 330000, text: 'right there' },
+    { at: 350000, text: 'yes!' }
+  ];
+  let currentVerdict = VERDICTS[0].text;
+  let verdictTween = null;
+  function updateVerdict(salary) {
+    let next = VERDICTS[0].text;
+    for (const v of VERDICTS) if (salary >= v.at) next = v.text;
+    if (next === currentVerdict) return;
+    currentVerdict = next;
+    const el = verdictText;
+    if (verdictTween) verdictTween.kill();
+    verdictTween = gsap.to(el, {
+      opacity: 0,
+      duration: 0.08,
+      ease: 'none',
+      onComplete: () => {
+        el.textContent = next;
+        verdictTween = gsap.to(el, { opacity: 1, duration: 0.12, ease: 'none' });
+      }
+    });
+  }
+
+  // --- Slider handling ----------------------------------------------------
+  function onSliderInput() {
+    if (revealed) return;
+
+    const salary = parseInt(slider.value, 10);
+    salaryText.textContent = formatMoney(salary);
+
+    const pct = pctFromSalary(salary);
+    targetY = yFromPct(pct);
+    setSliderGradient(salary);
+    updateTasks(salary);
+    updateVerdict(salary);
+
+    if (!interacted) {
+      interacted = true;
+      verdict.classList.add('visible');
+    }
+
+    if (salary >= SLIDER_MAX) {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(triggerReveal, MAX_HIT_MS);
+    } else {
+      resetIdleTimer();
+    }
+  }
+
+  function resetIdleTimer() {
+    if (revealed || !interacted) return;
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(triggerReveal, IDLE_MS);
+  }
+
+  // --- Reveal --------------------------------------------------------------
+  function triggerReveal() {
+    if (revealed) return;
+    revealed = true;
+    clearTimeout(idleTimer);
+    revealAllTasks();
+
+    const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+
+    tl.to({ y: targetY }, {
+      y: FILL_TOP - 4,
+      duration: 0.8,
+      ease: 'power2.inOut',
+      onUpdate: function () { targetY = this.targets()[0].y; }
+    }, 0);
+
+    const startSalary = parseInt(slider.value, 10);
+    tl.to({ s: startSalary }, {
+      s: SLIDER_MAX,
+      duration: 0.8,
+      ease: 'power2.inOut',
+      onUpdate: function () {
+        const v = Math.round(this.targets()[0].s / 1000) * 1000;
+        salaryText.textContent = formatMoney(v);
+        setSliderGradient(v);
+      }
+    }, 0);
+
+    tl.to(halo, { opacity: 1, duration: 0.4 }, 0.55)
+      .to(halo, { opacity: 0, duration: 0.8 }, 1.0);
+
+    tl.to(smile, {
+      attr: { d: 'M 180 180 C 160 212 105 215 106 188' },
+      duration: 0.55,
+      ease: 'back.out(1.6)'
+    }, 0.6);
+
+    tl.fromTo(avatarWrap,
+      { scale: 1 },
+      { scale: 1.05, duration: 0.26, ease: 'power2.out' },
+      0.6
+    ).to(avatarWrap, { scale: 1, duration: 0.45, ease: 'power2.out' }, 0.86);
+
+    // Headline: clean slow crossfade, no movement
+    tl.to(headlineQ, { opacity: 0, duration: 0.7, ease: 'sine.inOut' }, 0.5);
+    tl.to(headlineA, { opacity: 1, duration: 0.9, ease: 'sine.inOut' }, 0.75);
+    // Swap verdict text from slider rung to "Anyone can afford it." in the same slot
+    tl.to(verdictText, {
+      opacity: 0,
+      duration: 0.35,
+      ease: 'sine.inOut',
+      onComplete: () => {
+        currentVerdict = 'Anyone can afford it.';
+        verdictText.textContent = currentVerdict;
+      }
+    }, 0.5);
+    tl.to(verdictText, { opacity: 1, duration: 0.5, ease: 'sine.inOut' }, 0.9);
+
+    // Strike bar draws across smoothly
+    tl.fromTo(strikeBar,
+      { width: 0 },
+      { width: '112%', duration: 0.55, ease: 'power2.out' },
+      0.6);
+
+    // Struck salary fades out in place
+    tl.to(salaryValue,
+      { opacity: 0, duration: 0.55, ease: 'sine.inOut' },
+      1.05);
+
+    // New tagline fades in gently
+    tl.to(newPrice,
+      { opacity: 1, duration: 0.75, ease: 'sine.inOut' },
+      1.25);
+
+    // Slider bits collapse smoothly (opacity first, then height)
+    tl.to([sliderLabel, sliderWrap, contextLine],
+      { opacity: 0, duration: 0.5, ease: 'sine.inOut' },
+      0.8);
+    tl.to([sliderLabel, sliderWrap, contextLine],
+      { height: 0, marginTop: 0, marginBottom: 0, paddingTop: 0, paddingBottom: 0, duration: 0.7, ease: 'power2.inOut' },
+      1.1);
+    tl.to(sliderPanel,
+      { gap: 0, duration: 0.7, ease: 'power2.inOut' },
+      1.1);
+
+    // Reveal block expands smoothly and fades in
+    tl.set(reveal, { pointerEvents: 'auto' }, 1.3)
+      .to(reveal, { height: 'auto', duration: 0.75, ease: 'power2.inOut' }, 1.3)
+      .to(reveal, { opacity: 1, duration: 0.85, ease: 'sine.inOut' }, 1.4);
+
+    slider.setAttribute('disabled', 'true');
+  }
+
+  // --- Events --------------------------------------------------------------
+  slider.addEventListener('input', onSliderInput);
+
+  cta.addEventListener('click', () => {
+    const host = 'li' + 'ndy' + '.ai';
+    window.location.href = 'https://' + host;
+  });
+
+  share.addEventListener('click', async () => {
+    const url = 'https://' + 'li' + 'ndy' + '.ai';
+    const text = 'heyo, found you the most kickass AI assistant: ' + url;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'Lindy', text: text });
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        const span = share.querySelector('span');
+        const original = span.textContent;
+        span.textContent = 'copied';
+        setTimeout(() => { span.textContent = original; }, 1800);
+      }
+    } catch (_) { /* user cancelled */ }
+  });
+
+  // --- Init ----------------------------------------------------------------
+  slider.value = 0;
+  salaryText.textContent = '0';
+  setSliderGradient(0);
+  requestAnimationFrame(renderFrame);
+  personalizeLocation();
+
+  gsap.from('#headline-q',   { opacity: 0, y: 14, duration: 0.8, ease: 'power3.out', delay: 0.15 });
+  gsap.from('.avatar-wrap',  { opacity: 0, scale: 0.92, duration: 0.9, ease: 'power3.out', delay: 0.3 });
+  gsap.from('.slider-panel', { opacity: 0, y: 18, duration: 0.8, ease: 'power3.out', delay: 0.5 });
+  gsap.from('.brand',        { opacity: 0, y: -6, duration: 0.6, ease: 'power2.out', delay: 0.2 });
+  gsap.from('.learn-more',   { opacity: 0, y: -6, duration: 0.6, ease: 'power2.out', delay: 0.3 });
+})();
+</script>
+</body>
+</html>
