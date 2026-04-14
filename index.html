@@ -441,63 +441,69 @@
     .task         { font-size: 16px; }
   }
   @media (max-width: 860px) {
-    main          { padding: 80px 20px 28px; gap: 0; justify-content: space-between; min-height: 100dvh; }
-    header        { flex: 0 0 auto; }
-    .stage-row    { flex: 1 1 auto; flex-direction: column; gap: 14px; justify-content: center; }
-    .panel-stack  { flex: 0 0 auto; }
+    main          { padding: 72px 20px 24px; gap: 18px; justify-content: center; }
+    .stage-row    { flex-direction: column; gap: 14px; }
     .tasks        { flex: 0 0 auto; flex-direction: row; flex-wrap: nowrap; justify-content: center; gap: 8px; padding: 0; width: 100%; max-width: 360px; }
     .tasks.left, .tasks.right { align-items: center; text-align: center; }
     .tasks.left .task, .tasks.right .task { transform: translateY(6px); }
     .task.visible { transform: translateY(0); }
-    /* Show only 2 tasks per side on mobile — 4 total, one clean row each */
+    /* Show only 2 tasks per side on mobile — 4 pill-shaped items total */
     .tasks.left  .task:nth-child(n+3),
     .tasks.right .task:nth-child(n+3) { display: none; }
     .task {
       background: rgba(255, 255, 255, 0.7);
       border: 1px solid rgba(15, 53, 71, 0.08);
-      padding: 7px 12px;
+      padding: 7px 13px;
       border-radius: 100px;
       color: var(--text);
       font-weight: 600;
       box-shadow: 0 2px 8px rgba(15, 53, 71, 0.04);
     }
-    .avatar-wrap  { width: 180px; order: -1; }
+    /* Once the reveal fires, the task pills have served their purpose — declutter */
+    body.revealed .stage-row { gap: 0; }
+    body.revealed .tasks     { display: none !important; }
+
+    .avatar-wrap  { width: 178px; order: -1; }
     .headline     { font-size: 30px; letter-spacing: -1px; }
-    .verdict      { margin-top: 12px; margin-bottom: 0; font-size: 18px; }
+    .verdict      { margin-top: 10px; margin-bottom: 2px; font-size: 18px; }
     .salary-value { font-size: 54px; letter-spacing: -2px; }
     .new-price    { font-size: 28px; letter-spacing: -0.6px; }
     .strike-bar   { height: 6px; }
     .slider-panel { gap: 14px; }
     .context-line { font-size: 13px; }
+    .reveal       { gap: 12px; }
   }
   @media (max-width: 480px) {
-    main          { padding: 72px 16px 24px; }
+    main          { padding: 66px 16px 22px; gap: 14px; }
     .topbar       { padding: 12px 16px; }
     .brand svg    { width: 22px; height: 22px; }
     .brand span   { font-size: 17px; }
     .learn-more   { font-size: 12px; padding: 8px 12px; }
     .headline     { font-size: clamp(18px, 5.6vw, 26px); letter-spacing: -0.5px; }
-    .verdict      { margin-top: 10px; font-size: 16px; }
+    .verdict      { margin-top: 8px; margin-bottom: 0; font-size: 16px; }
     .salary-value { font-size: 48px; letter-spacing: -1.6px; }
     .salary-value .unit { font-size: 0.32em; }
     .new-price    { font-size: 26px; letter-spacing: -0.6px; white-space: nowrap; text-align: center; }
-    .avatar-wrap  { width: 158px; }
-    .stage-row    { gap: 12px; }
+    .avatar-wrap  { width: 156px; }
+    .stage-row    { gap: 10px; }
     .tasks        { max-width: 340px; gap: 6px; }
-    .task         { font-size: 12px; padding: 6px 10px; }
+    .task         { font-size: 12px; padding: 6px 11px; }
+    .reveal       { gap: 10px; }
     .reveal-sub   { font-size: 14px; }
-    .cta          { padding: 14px 28px; font-size: 15px; }
-    .panel-stack  { max-width: 100%; }
+    .cta          { padding: 14px 30px; font-size: 15px; }
+    .panel-stack  { max-width: 100%; gap: 4px; }
     .slider-panel { gap: 12px; }
+    .share        { font-size: 12px; padding: 4px 8px; }
   }
   @media (max-width: 360px) {
-    main          { padding: 64px 12px 20px; }
+    main          { padding: 62px 12px 18px; gap: 10px; }
     .headline     { font-size: 16px; letter-spacing: -0.3px; }
-    .avatar-wrap  { width: 138px; }
+    .avatar-wrap  { width: 134px; }
     .salary-value { font-size: 42px; }
     .new-price    { font-size: 22px; }
     .task         { font-size: 11px; padding: 5px 9px; }
     .tasks        { gap: 5px; }
+    .stage-row    { gap: 8px; }
   }
   @media (max-height: 760px) and (min-width: 861px) {
     main          { padding: 88px 32px 36px; gap: 22px; }
@@ -901,6 +907,7 @@
     if (revealed) return;
     revealed = true;
     clearTimeout(idleTimer);
+    document.body.classList.add('revealed');
     revealAllTasks();
 
     const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
