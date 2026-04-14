@@ -42,9 +42,7 @@
 
   body {
     min-height: 100dvh;
-    background:
-      radial-gradient(ellipse 90% 70% at 50% 32%, #FFF6D6 0%, rgba(255, 246, 214, 0) 70%),
-      linear-gradient(180deg, #FEFDF4 0%, #FFF4C9 100%);
+    background: linear-gradient(180deg, #FEFDF4 0%, #FFF6DC 55%, #FFF0BF 100%);
     background-repeat: no-repeat;
   }
 
@@ -451,12 +449,17 @@
     .tasks.left  .task:nth-child(n+3),
     .tasks.right .task:nth-child(n+3) { display: none; }
     .task {
-      background: rgba(255, 255, 255, 0.7);
-      border: 1px solid rgba(15, 53, 71, 0.08);
+      background: transparent;
+      border: 1px solid transparent;
       padding: 7px 13px;
       border-radius: 100px;
       color: var(--text);
       font-weight: 600;
+      box-shadow: none;
+    }
+    .task.visible {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(15, 53, 71, 0.08);
       box-shadow: 0 2px 8px rgba(15, 53, 71, 0.04);
     }
     /* Once the reveal fires, the task pills have served their purpose — declutter */
