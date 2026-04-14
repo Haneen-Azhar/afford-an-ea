@@ -441,13 +441,14 @@
   @media (max-width: 860px) {
     main          { padding: 72px 20px 24px; gap: 18px; justify-content: center; }
     .stage-row    { flex-direction: column; gap: 14px; }
+    .panel-stack  { margin-top: 8px; }
     .tasks        { flex: 0 0 auto; flex-direction: row; flex-wrap: nowrap; justify-content: center; gap: 8px; padding: 0; width: 100%; max-width: 360px; }
     .tasks.left, .tasks.right { align-items: center; text-align: center; }
     .tasks.left .task, .tasks.right .task { transform: translateY(6px); }
     .task.visible { transform: translateY(0); }
-    /* Show only 2 tasks per side on mobile — 4 pill-shaped items total */
-    .tasks.left  .task:nth-child(n+3),
-    .tasks.right .task:nth-child(n+3) { display: none; }
+    /* Show 3 pills total — 2 from left, 1 from right — fits one clean row */
+    .tasks.left  .task:nth-child(n+3) { display: none; }
+    .tasks.right .task:nth-child(n+2) { display: none; }
     .task {
       background: transparent;
       border: 1px solid transparent;
@@ -478,6 +479,7 @@
   }
   @media (max-width: 480px) {
     main          { padding: 66px 16px 22px; gap: 14px; }
+    .panel-stack  { margin-top: 14px; }
     .topbar       { padding: 12px 16px; }
     .brand svg    { width: 22px; height: 22px; }
     .brand span   { font-size: 17px; }
