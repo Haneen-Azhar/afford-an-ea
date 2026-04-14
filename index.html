@@ -14,8 +14,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="preload" as="image" href="assets/static_background_cream-gradient_wide.png">
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
 <style>
@@ -45,9 +43,9 @@
   body {
     min-height: 100dvh;
     background:
-      url("assets/static_background_cream-gradient_wide.png") center/cover no-repeat,
+      radial-gradient(ellipse 90% 70% at 50% 32%, #FFF6D6 0%, rgba(255, 246, 214, 0) 70%),
       linear-gradient(180deg, #FEFDF4 0%, #FFF4C9 100%);
-    background-attachment: fixed;
+    background-repeat: no-repeat;
   }
 
   /* ===== Top bar ======================================================== */
@@ -119,10 +117,10 @@
     min-height: 1.05em;
   }
   .headline {
-    font-size: clamp(22px, 5.4vw, 56px);
+    font-size: clamp(17px, 5.2vw, 56px);
     font-weight: 700;
     line-height: 1.02;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.04em;
     text-align: center;
     max-width: none;
     margin: 0 auto;
@@ -443,31 +441,48 @@
     .task         { font-size: 16px; }
   }
   @media (max-width: 860px) {
-    main          { padding: 84px 22px 32px; gap: 22px; }
-    .stage-row    { flex-direction: column; gap: 14px; }
-    .tasks        { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 6px 14px; padding: 0; }
+    main          { padding: 76px 20px 28px; gap: 18px; justify-content: flex-start; }
+    .stage-row    { flex-direction: column; gap: 10px; }
+    .tasks        { flex: 0 0 auto; flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 4px 12px; padding: 0 4px; width: 100%; max-width: 360px; }
     .tasks.left, .tasks.right { align-items: center; text-align: center; }
     .tasks.left .task, .tasks.right .task { transform: translateY(6px); }
     .task.visible { transform: translateY(0); }
-    .avatar-wrap  { width: 190px; order: -1; }
-    .headline     { font-size: 34px; letter-spacing: -1.4px; }
-    .salary-value { font-size: 60px; letter-spacing: -2.6px; }
-    .new-price    { font-size: 30px; letter-spacing: -0.8px; }
+    .avatar-wrap  { width: 180px; order: -1; }
+    .headline     { font-size: 30px; letter-spacing: -1px; }
+    .verdict      { margin-top: 12px; margin-bottom: 14px; font-size: 18px; }
+    .salary-value { font-size: 54px; letter-spacing: -2px; }
+    .new-price    { font-size: 28px; letter-spacing: -0.6px; }
     .strike-bar   { height: 6px; }
+    .slider-panel { gap: 12px; }
+    .context-line { font-size: 13px; }
   }
   @media (max-width: 480px) {
-    main          { padding: 74px 18px 24px; gap: 18px; }
-    .topbar       { padding: 14px 18px; }
+    main          { padding: 68px 16px 22px; gap: 12px; }
+    .topbar       { padding: 12px 16px; }
     .brand svg    { width: 22px; height: 22px; }
     .brand span   { font-size: 17px; }
     .learn-more   { font-size: 12px; padding: 8px 12px; }
-    .headline     { font-size: 22px; letter-spacing: -0.6px; line-height: 1.02; }
-    .salary-value { font-size: 46px; letter-spacing: -1.8px; }
-    .new-price    { font-size: 32px; letter-spacing: -1px; white-space: normal; text-align: center; }
-    .avatar-wrap  { width: 150px; }
-    .task         { font-size: 13px; }
-    .reveal-sub   { font-size: 16px; }
-    .cta          { padding: 15px 32px; }
+    .headline     { font-size: clamp(17px, 5.6vw, 24px); letter-spacing: -0.5px; }
+    .verdict      { margin-top: 10px; margin-bottom: 10px; font-size: 16px; }
+    .salary-value { font-size: 46px; letter-spacing: -1.6px; }
+    .salary-value .unit { font-size: 0.32em; }
+    .new-price    { font-size: 26px; letter-spacing: -0.6px; white-space: nowrap; text-align: center; }
+    .avatar-wrap  { width: 148px; }
+    .stage-row    { gap: 6px; }
+    .tasks        { max-width: 320px; gap: 3px 10px; }
+    .task         { font-size: 12px; }
+    .reveal-sub   { font-size: 14px; }
+    .cta          { padding: 14px 28px; font-size: 15px; }
+    .panel-stack  { max-width: 100%; }
+    .slider-panel { gap: 10px; }
+  }
+  @media (max-width: 360px) {
+    main          { padding: 64px 12px 18px; }
+    .headline     { font-size: 16px; letter-spacing: -0.3px; }
+    .avatar-wrap  { width: 132px; }
+    .salary-value { font-size: 40px; }
+    .new-price    { font-size: 22px; }
+    .task         { font-size: 11px; }
   }
   @media (max-height: 760px) and (min-width: 861px) {
     main          { padding: 88px 32px 36px; gap: 22px; }
